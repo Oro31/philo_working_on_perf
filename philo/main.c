@@ -6,7 +6,7 @@
 /*   By: rvalton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 12:21:38 by rvalton           #+#    #+#             */
-/*   Updated: 2021/11/16 14:29:00 by rvalton          ###   ########.fr       */
+/*   Updated: 2021/11/18 14:32:33 by rvalton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ static int	ft_handle_argv(int argc, char **argv)
 	return (1);
 }
 
-void	ft_printf(char *msg, long tmstmp, int i, int play)
+void	ft_printf(char *msg, long tmstmp, int i)
 {
-	if (play)
-		printf("%ld %d %s\n", tmstmp / 1000, i, msg);
+	printf("%ld %d %s\n", tmstmp / 1000, i, msg);
 }
 
 int	main(int argc, char **argv)
@@ -73,11 +72,11 @@ int	main(int argc, char **argv)
 	if (!ft_init_vars(&vars, &philos, argc, argv))
 		return (ft_exit(&philos, &vars, 0));
 	vars.nb_arg = argc;
-	vars.is_mutex_lock = 0;
 	vars.nb_philos_satiated = 0;
 	vars.play = 1;
 	if (!ft_init_forks(&vars))
 		return (ft_exit(&philos, &vars, 1));
+	vars.ret = gettimeofday(&vars.initial_tmstmp, NULL);
 	if (!ft_create_philo_th(&vars, &philos))
 		return (ft_exit(&philos, &vars, 2));
 	i = -1;
@@ -86,8 +85,6 @@ int	main(int argc, char **argv)
 		vars.ret = pthread_join(philos[i].th_philo, NULL);
 		if (vars.ret)
 			return (ft_exit(&philos, &vars, 3));
-		philos[i].ret = gettimeofday(&philos[i].t, NULL);
-		ft_wait(philos[i].t, 100, &philos[i]);
 	}
 	return (ft_exit(&philos, &vars, 4));
 }

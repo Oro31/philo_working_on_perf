@@ -6,7 +6,7 @@
 /*   By: rvalton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 12:15:59 by rvalton           #+#    #+#             */
-/*   Updated: 2021/11/15 15:13:31 by rvalton          ###   ########.fr       */
+/*   Updated: 2021/11/18 15:03:57 by rvalton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	ft_init_vars(t_vars *vars, t_philo **philos, int argc, char **argv)
 		return (0);
 	}
 	vars->ret = pthread_mutex_init(&vars->mutex, NULL);
+	vars->ret = pthread_mutex_init(&vars->write, NULL);
 	if (vars->ret)
 	{
 		free(philos[0]);
@@ -65,7 +66,6 @@ int	ft_init_forks(t_vars *vars)
 	i = -1;
 	while (++i < vars->nb_philos)
 	{
-		vars->forks[i].use = 0;
 		ret = pthread_mutex_init(&vars->forks[i].mutex, NULL);
 		if (ret)
 		{
@@ -85,7 +85,6 @@ int	ft_create_philo_th(t_vars *vars, t_philo **philos)
 	int	i;
 	int	ret;
 
-	ret = gettimeofday(&vars->initial_tmstmp, NULL);
 	i = -1;
 	while (++i < vars->nb_philos)
 	{
@@ -96,6 +95,9 @@ int	ft_create_philo_th(t_vars *vars, t_philo **philos)
 				&philos[0][i]);
 		if (ret)
 			return (0);
+		usleep(200);
+		/*philos[0][i].ret = gettimeofday(&philos[0][i].last_meal, NULL);
+		ft_wait(philos[0][i].last_meal, 1000, &philos[0][i]);*/
 	}
 	return (1);
 }

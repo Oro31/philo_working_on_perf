@@ -6,7 +6,7 @@
 /*   By: rvalton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 18:55:32 by rvalton           #+#    #+#             */
-/*   Updated: 2021/11/16 13:51:37 by rvalton          ###   ########.fr       */
+/*   Updated: 2021/11/18 15:03:21 by rvalton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,23 @@
 
 typedef struct s_fork {
 	pthread_mutex_t	mutex;
-	int				use;
 }				t_fork;
 
 typedef struct s_vars {
 	t_fork			*forks;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	write;
 	struct timeval	initial_tmstmp;
-	int				is_mutex_lock;
-	int				nb_arg;
-	int				ret;
 	int				play;
 	int				id;
+	int				nb_arg;
 	int				nb_philos;
 	long			ttd;
 	long			tte;
 	long			tts;
 	int				nb_must_eat;
 	int				nb_philos_satiated;
+	int				ret;
 }				t_vars;
 
 typedef struct s_philo {
@@ -60,7 +59,7 @@ typedef struct s_philo {
 int		ft_is_num(char *str);
 int		ft_is_int(char *str);
 
-void	ft_printf(char *msg, long tmstmp, int i, int play);
+void	ft_printf(char *msg, long tmstmp, int i);
 
 int		ft_atoi(const char *nptr);
 
@@ -68,6 +67,7 @@ void	ft_lock_vars_mutex(t_philo *philo);
 void	ft_unlock_vars_mutex(t_philo *philo);
 void	ft_lock_forks_mutex(t_philo *philo, int i);
 void	ft_unlock_forks_mutex(t_philo *philo, int i);
+int		ft_play(t_philo *philo);
 
 long	ft_timediff(struct timeval t0, struct timeval t1);
 void	ft_wait(struct timeval start, long ttw, t_philo *philo);
@@ -80,6 +80,7 @@ void	ft_thinking(t_philo *philo, int i);
 void	ft_died(t_philo *philo, int i);
 
 void	ft_satiated(t_philo *philo);
+void	ft_dead(t_philo *philo);
 
 int		ft_is_philo_dead(struct timeval last_meal, t_philo *philo);
 void	ft_philo_eat(t_philo *philo, int i);

@@ -6,7 +6,7 @@
 /*   By: rvalton <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 12:06:21 by rvalton           #+#    #+#             */
-/*   Updated: 2021/11/16 12:15:48 by rvalton          ###   ########.fr       */
+/*   Updated: 2021/11/17 11:32:28 by rvalton          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,7 @@ void	ft_wait(struct timeval start, long ttw, t_philo *philo)
 		&& !ret)
 		ret = gettimeofday(&t, NULL);
 	if (ft_is_philo_dead(philo->last_meal, philo))
-	{
-		ft_lock_vars_mutex(philo);
 		ft_died(philo, philo->id);
-		ft_unlock_vars_mutex(philo);
-	}
 }
 
 long	ft_ttw_before_trying_to_eat(t_philo *philo)
